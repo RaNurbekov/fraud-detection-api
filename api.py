@@ -22,7 +22,9 @@ async def lifespan(app: FastAPI):
 
     print("Connecting to Redis Feature Store (Upstash)...")
     redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
-    cache = redis.from_url(redis_url, decode_responses=True)
+    print(f"REDIS_URL from env: {redis_url[:30]}...")  # показывает первые 30 символов
+    cache = redis.from_url(redis_url, decode_responses=True, ssl_cert_reqs=None)
+    
 
     # Auto-seed Redis if empty
     existing_keys = cache.keys("profile:*")
